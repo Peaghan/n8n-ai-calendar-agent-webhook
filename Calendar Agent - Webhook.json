@@ -1,0 +1,232 @@
+{
+  "name": "Calendar Agent",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "calendar-agent",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "8c5ae0d3-4170-4d27-b5e9-3f6f8f6a1b77",
+      "name": "Webhook",
+      "webhookId": "3af45411-6baf-455d-bb2c-6b94ed3a1350"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.body.message }}",
+        "options": {
+          "systemMessage": "=Role\nYou are a smart calendar assistant connected to Google Calendar. You help the user check or schedule meetings in natural language.\n\nThe current date and time is: [DateTime: {{$now}}]\nYou can handle:\nChecking meetings for specific dates\nQuestions like “today,” “tomorrow,” or “next Monday”\nScheduling new meetings with a title and date\nTools\nList Events — lists calendar events for a given date or range. Inputs: date (ISO format, e.g., 2025-11-02) Output: list of events with title, start time, and summary.\n\nAdd Event — adds a new event to the calendar. Inputs:\ntitle (string)\nstart_time (ISO format, e.g., 2025-11-04T10:00:00)\nend_time (ISO format, e.g., 2025-11-04T11:00:00)\noptional description\nAlways\nUse the exact timestamp from [DateTime] — don’t apply timezone or UTC conversion.\n\nWhen parsing relative dates (“today,” “tomorrow,” etc.), calculate based on [DateTime] exactly as given.\n\nWhen displaying times to the user, convert ISO times into natural, readable format (e.g., “10:00 AM” instead of “10:00:00.000”).\n\nIf a meeting has both start and end times, say: “You have [title] from 10:00 AM to 11:00 AM.”\n\nWhen listing events:\n\nIf there are none, say: “You have no meetings on that day.”\n\nWhen adding events, confirm with: “I’ve added [title] on [date].”\n\nInterpret incomplete dates (“10 November”, “tomorrow”) as belonging to the current year and the next upcoming occurrence.\n\nBe conversational, concise, and friendly.\n\nOutput only plain text — no JSON or code.\nNever\nSchedule events in the past.\n\nApply timezone offsets or append “Z”.\n\nShow raw ISO timestamps to the user.\nExamples\nUser: Do I have any meetings today? → Use List Events with today’s date. → Reply: “You have a meeting called Project Sync at 2:00 PM.”\n\nUser: Schedule a call with Sarah tomorrow. → Use Add Event with: title = \"Call with Sarah\", start_time = tomorrow’s ISO date/time (no offset), end_time = start_time + 1 hour. → Reply: “I’ve added Call with Sarah tomorrow at 3:00 PM.”\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "83829cce-7d0d-4918-8d69-bbcbf265d91b",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        80,
+        208
+      ],
+      "id": "fabdd749-0ab7-4333-92d7-162393742035",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "SU0KLCHzYoOuVnwI",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.body.sessionId }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        224,
+        208
+      ],
+      "id": "3d174269-257a-48ea-9423-923c72caec23",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Lists all events from Google Calendar for a specific date. Use this when the user asks about their schedule or meetings on a particular day",
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "obsidiansoftc@gmail.com",
+          "mode": "list",
+          "cachedResultName": "obsidiansoftc@gmail.com"
+        },
+        "timeMin": "={{ $fromAI('After', 'Start date/time in ISO format (e.g., 2024-01-15T00:00:00)', 'string') }}",
+        "timeMax": "={{ $fromAI('Before', 'End date/time in ISO format (e.g., 2024-01-15T23:59:59)', 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        608,
+        176
+      ],
+      "id": "0c029181-f4b5-4b73-a581-14a2077505ec",
+      "name": "List Events",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "949mJmjP6u2fj6Xj",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Creates a new event in Google Calendar. Use this when the user wants to schedule a meeting or add an event",
+        "calendar": {
+          "__rl": true,
+          "value": "obsidiansoftc@gmail.com",
+          "mode": "list",
+          "cachedResultName": "obsidiansoftc@gmail.com"
+        },
+        "start": "={{ $fromAI('start_time', 'Start date/time in ISO format (e.g., 2024-01-15T10:00:00)', 'string') }}",
+        "end": "={{ $fromAI('end_time', 'End date/time in ISO format (e.g., 2024-01-15T11:00:00)', 'string') }}",
+        "additionalFields": {
+          "description": "={{ $fromAI('description', 'Optional event description', 'string', '') }}",
+          "summary": "={{ $fromAI('title', 'Event title or summary', 'string') }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        368,
+        208
+      ],
+      "id": "33ea1bb0-44cc-4861-95bf-aadb5329b3ad",
+      "name": "Add Event",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "949mJmjP6u2fj6Xj",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ $json.output }}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        560,
+        0
+      ],
+      "id": "c9abcc1e-53ad-4ae2-87dc-6303aafc5bd5",
+      "name": "Respond to Webhook"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "List Events": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add Event": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "versionId": "a587302d-d946-4c15-9aca-6d5cca347377",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "f6869c7ad4cdeab527b74e716ce8012d2c04dccf7e20133020c5149b22a63ef9"
+  },
+  "id": "RB6xOO-y9Ru5eVIaBU2PE",
+  "tags": []
+}
